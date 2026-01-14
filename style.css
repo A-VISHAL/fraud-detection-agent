@@ -1,0 +1,394 @@
+:root {
+    --primary: #007AFF;
+    /* Apple Blue */
+    --primary-hover: #0056b3;
+    --bg-light: #F2F2F7;
+    --phone-bg: #FFFFFF;
+    --text-main: #000000;
+    --text-muted: #8E8E93;
+    --input-bg: #F2F2F7;
+    --border-color: #E5E5EA;
+    --success: #34C759;
+    --error: #FF3B30;
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: var(--font-family);
+    background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    /* Stack phone and footer */
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    gap: 20px;
+}
+
+/* Mobile Shell Refined with Neon Glow */
+.app-container {
+    width: 380px;
+    height: 750px;
+    background: var(--phone-bg);
+    border-radius: 54px;
+    padding: 24px;
+    box-shadow:
+        0 0 20px rgba(0, 122, 255, 0.4),
+        /* Primary Neon Glow */
+        0 0 40px rgba(52, 199, 89, 0.2),
+        /* Secondary Hint */
+        inset 0 0 0 2px #334155,
+        inset 0 0 0 8px #1e293b;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    border: 6px solid #007AFF;
+    animation: neonBreathe 4s infinite alternate ease-in-out;
+}
+
+@keyframes neonBreathe {
+    0% {
+        border-color: #007AFF;
+        box-shadow: 0 0 20px rgba(0, 122, 255, 0.4), inset 0 0 0 2px #334155, inset 0 0 0 8px #1e293b;
+    }
+
+    100% {
+        border-color: #34C759;
+        box-shadow: 0 0 35px rgba(52, 199, 89, 0.6), inset 0 0 0 2px #334155, inset 0 0 0 8px #1e293b;
+    }
+}
+
+/* Side Buttons with Neon */
+.app-container::after {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 120px;
+    width: 4px;
+    height: 50px;
+    background: #007AFF;
+    border-radius: 4px 0 0 4px;
+    box-shadow: 0 0 10px #007AFF, 0 65px 0 0 #34C759, 0 65px 10px #34C759;
+}
+
+/* Power Button */
+header::after {
+    content: '';
+    position: absolute;
+    right: -32px;
+    top: 160px;
+    width: 4px;
+    height: 80px;
+    background: #007AFF;
+    border-radius: 0 4px 4px 0;
+    box-shadow: 0 0 10px #007AFF;
+}
+
+/* Realistic Notch */
+.app-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140px;
+    height: 32px;
+    background: #0f172a;
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+    z-index: 1001;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.background-blobs {
+    display: none;
+    /* Removed for light theme */
+}
+
+header {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.logo h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.payment-card {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.payment-card h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+}
+
+.input-group {
+    margin-bottom: 18px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    padding-left: 4px;
+}
+
+input {
+    width: 100%;
+    background: var(--input-bg);
+    border: none;
+    border-radius: 14px;
+    padding: 14px 16px;
+    color: var(--text-main);
+    font-family: var(--font-family);
+    font-size: 1rem;
+    transition: background 0.2s;
+}
+
+input:focus {
+    outline: none;
+    background: #E5E5EA;
+}
+
+.readonly-input {
+    color: var(--text-muted);
+    cursor: not-allowed;
+}
+
+.amount-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.currency-symbol {
+    position: absolute;
+    left: 16px;
+    color: var(--text-main);
+    font-weight: 500;
+}
+
+.amount-input-wrapper input {
+    padding-left: 32px;
+}
+
+button.btn-primary {
+    width: 100%;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    padding: 18px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    margin-top: auto;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+button.btn-primary:active {
+    transform: scale(0.97);
+    opacity: 0.8;
+}
+
+button.btn-primary:disabled {
+    opacity: 0.5;
+}
+
+.loader {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 0.8s linear infinite;
+    display: none;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.status-message {
+    margin-top: 15px;
+    padding: 12px;
+    background: #E8F5E9;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #2E7D32;
+    font-size: 0.85rem;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.status-message.hidden {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+footer {
+    padding: 15px 0;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.7rem;
+}
+
+/* Notifications - Floating atop the content */
+.notification-container {
+    position: absolute;
+    top: 45px;
+    /* Below the notch */
+    left: 16px;
+    right: 16px;
+    z-index: 1002;
+    pointer-events: none;
+}
+
+.notification {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    pointer-events: auto;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    animation: slideDownFade 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.notification.hide {
+    animation: slideUpFade 0.4s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+@keyframes slideDownFade {
+    from {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideUpFade {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+}
+
+.notification-icon {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.notification.success .notification-icon {
+    background: var(--success);
+    color: white;
+}
+
+.notification.error .notification-icon {
+    background: var(--error);
+    color: white;
+}
+
+.notification.info .notification-icon {
+    background: var(--primary);
+    color: white;
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--text-main);
+}
+
+.notification-message {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.3;
+}
+
+/* Browser compatibility fixes */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}

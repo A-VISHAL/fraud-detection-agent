@@ -1,0 +1,17 @@
+# n8n workflow files
+n8n-code/fintech.json
+
+# Environment files
+.env
+.env.local
+.env.dev
+.env.test
+.env.prod
+
+# Node dependencies
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
