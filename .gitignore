@@ -1,5 +1,5 @@
 # n8n workflow files
-n8n-code/fintech.json
+# n8n-code/fintech.json (uncommented to allow push)
 
 # Environment files
 .env

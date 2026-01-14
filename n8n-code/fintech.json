@@ -1,0 +1,469 @@
+{
+  "name": "fintech",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "0672fa7f-94f6-47a2-9741-fcc278bc9b7b",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "4a2b2ccf-6bd9-4d75-98ff-789f9b7cd1e2",
+      "name": "Webhook",
+      "webhookId": "0672fa7f-94f6-47a2-9741-fcc278bc9b7b"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c3e21166-06d3-46fa-bca5-da0b7ada0692",
+              "name": "user_id",
+              "value": "={{ $json.body.user_id }}",
+              "type": "string"
+            },
+            {
+              "id": "92593806-de33-44fc-a154-6cd9c52dfaa8",
+              "name": "merchant",
+              "value": "={{ $json.body.merchant }}",
+              "type": "string"
+            },
+            {
+              "id": "ea1d5f81-b4c6-4a01-a06a-9bc5c68a3908",
+              "name": "amount",
+              "value": "={{ $json.body.amount }}",
+              "type": "number"
+            },
+            {
+              "id": "10304b49-806f-425f-8689-29811122aee9",
+              "name": "timestamp",
+              "value": "={{ $json.body.timestamp }}",
+              "type": "string"
+            },
+            {
+              "id": "da5a7656-f2ca-4a91-829b-9867bfa3944b",
+              "name": "location",
+              "value": "={{ $json.body.location }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "44b137bf-3684-4d5d-aaea-0f42d0516d58",
+      "name": "Prepare Transaction Data"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b8081174-d04a-4cef-9caf-4a86cffe4139",
+              "name": "avg_amount",
+              "value": 5000,
+              "type": "number"
+            },
+            {
+              "id": "d7bfc010-50e6-4289-b252-94be06d27070",
+              "name": "usual_time_range",
+              "value": "09:00–22:00",
+              "type": "string"
+            },
+            {
+              "id": "6c27c501-6bad-4cee-ad98-9f68b9fe25de",
+              "name": "frequent_merchants",
+              "value": "Swiggy, Amazon, Uber",
+              "type": "string"
+            },
+            {
+              "id": "42504029-70cf-42a9-9901-fc8dd0f7fdc4",
+              "name": "usual_location",
+              "value": "Chennai",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "include": "except",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        416,
+        0
+      ],
+      "id": "20b569d6-2584-4259-b23e-2657ccc85d5b",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=You are a real-time fraud detection AI agent for Indian fintech transactions.\n\nYou will receive:\n- Current transaction details\n- Historical spending behavior of the user\n\nYour task:\n1. Compare the current transaction with the historical behavior.\n2. Decide whether the transaction is NORMAL, SUSPICIOUS, or FRAUD.\n3. Minimize false positives while prioritizing user safety.\n\nSTRICT OUTPUT RULES:\n- Respond ONLY with valid JSON.\n- Do NOT include any explanations outside JSON.\n- Do NOT include markdown, comments, or extra text.\n- Do NOT ask follow-up questions.\n\nThe JSON response MUST strictly follow this schema:\n\n{\n  \"decision\": \"NORMAL | SUSPICIOUS | FRAUD\",\n  \"confidence\": <number between 0 and 1>,\n  \"reason\": \"<short, single-sentence explanation>\"\n}\n\nANALYSIS GUIDELINES:\n- Flag as FRAUD if the amount or timing is highly abnormal compared to history.\n- Flag as SUSPICIOUS if partially abnormal but not clearly fraudulent.\n- Otherwise, mark as NORMAL.\n\nINPUT DATA FOR ANALYSIS:\nUser ID: {{ $json.user_id }}\nMerchant: {{ $json.merchant }}\nAmount (INR): {{ $json.amount }}\nTimestamp: {{ $json.timestamp }}\nLocation: {{ $json.location }}\n\nHistorical Behavior:\nAverage Amount: {{ $json.avg_amount }}\nUsual Time Range: {{ $json.usual_time_range }}\nFrequent Merchants: {{ $json.frequent_merchants }}\nUsual Location: {{ $json.usual_location }}\n"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2,
+      "position": [
+        -720,
+        -480
+      ],
+      "id": "035a923d-39ca-4797-a17a-6244cf243682",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "uqaVQMGwJaqjZwLA",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a real-time fraud detection AI agent for Indian fintech transactions.\n\nYou will receive:\n- Current transaction details\n- Historical spending behavior of the user\n\nYour task:\n1. Compare the current transaction with the historical behavior.\n2. Decide whether the transaction is NORMAL, SUSPICIOUS, or FRAUD.\n3. Minimize false positives while prioritizing user safety.\n\nSTRICT OUTPUT RULES:\n- Respond ONLY with valid JSON.\n- Do NOT include any explanations outside JSON.\n- Do NOT include markdown, comments, or extra text.\n- Do NOT ask follow-up questions.\n\nThe JSON response MUST strictly follow this schema:\n\n{\n  \"decision\": \"NORMAL | SUSPICIOUS | FRAUD\",\n  \"confidence\": <number between 0 and 1>,\n  \"reason\": \"<short, single-sentence explanation>\"\n}\n\nANALYSIS GUIDELINES:\n- Flag as FRAUD if the amount or timing is highly abnormal compared to history.\n- Flag as SUSPICIOUS if partially abnormal but not clearly fraudulent.\n- Otherwise, mark as NORMAL.\n\nINPUT DATA FOR ANALYSIS:\nUser ID: {{ $json.user_id }}\nMerchant: {{ $json.merchant }}\nAmount (INR): {{ $json.amount }}\nTimestamp: {{ $json.timestamp }}\nLocation: {{ $json.location }}\n\nHistorical Behavior:\nAverage Amount: {{ $json.avg_amount }}\nUsual Time Range: {{ $json.usual_time_range }}\nFrequent Merchants: {{ $json.frequent_merchants }}\nUsual Location: {{ $json.usual_location }}\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You will receive a JSON object from a fraud detection agent with fields such as:\n- decision\n- confidence\n- reason\n- amount (if available)\n\nYour task is to convert the input into a NEW JSON object with the following structure:\n\n{\n  \"state\": \"string\",\n  \"cities\": [\"string\"]\n}\n\nDECISION GUIDELINES (SIMPLE RULES):\n- If the transaction amount is less than 1000, treat it as NORMAL.\n- If the transaction amount is between 1000 and 4000, treat it as SUSPICIOUS.\n- If the transaction amount is greater than 4000, treat it as FRAUD.\n\nMAPPING RULES:\n- Set \"state\" to the final decision (NORMAL, SUSPICIOUS, or FRAUD).\n- Set \"cities\" as an array of strings.\n- Include a short explanation in \"cities\" describing why this decision was made.\n- Optionally include confidence information as text if available.\n\nOUTPUT RULES:\n- Respond with valid JSON only.\n- No markdown or extra text.\n- Keep the output simple and readable.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        624,
+        0
+      ],
+      "id": "6e2400dc-50a3-4b9e-b0a1-00e5b8e2406b",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        624,
+        240
+      ],
+      "id": "19d9f028-0bc8-42e2-b20e-8b0174e1d166",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "uqaVQMGwJaqjZwLA",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1c4becc5-23dc-4dde-a49a-cdb1eee14722",
+              "name": "decision",
+              "value": "={{ JSON.parse($json.output).decision }}",
+              "type": "string"
+            },
+            {
+              "id": "dbf910f8-4461-4227-add8-37853501c196",
+              "name": "confidence",
+              "value": "={{ JSON.parse($json.output).confidence }}",
+              "type": "string"
+            },
+            {
+              "id": "0e0bdff1-0ed8-496a-8a6d-51ecc4e6f6f8",
+              "name": "reason",
+              "value": "={{ JSON.parse($json.output).reason }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        976,
+        0
+      ],
+      "id": "caf5fca0-f5de-464b-8e47-e2b4c981d7b8",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.decision }}",
+                    "rightValue": "SUSPICIOUS",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "d9e4c486-ed91-468b-bc97-75b6cdcab035"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "SUSPICIOUS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "2f702dda-b332-4c62-a023-ecc7784de02d",
+                    "leftValue": "={{ $json.decision }}",
+                    "rightValue": "FRAUD",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "FRAUD"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "8f35ff84-43ff-496f-8728-293ba6a1bb34",
+                    "leftValue": "={{ $json.decision }}",
+                    "rightValue": "NORMAL",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "NORMAL"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        1184,
+        -16
+      ],
+      "id": "285a776c-e043-4ea3-90fd-26a32bf9dcab",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "⚠️ Suspicious activity detected. Please verify this transaction.\n",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1456,
+        -208
+      ],
+      "id": "15cb6895-2842-43a8-ac35-ec965a1d58cc",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "🚫 Fraud detected. Transaction has been blocked.\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1472,
+        0
+      ],
+      "id": "7a438ae9-e453-4ddd-8b8d-14df0d6cd6c6",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "✅ Transaction successful. Nothing to worry about.\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1456,
+        256
+      ],
+      "id": "4dd75b2c-ed64-463f-8e45-c34843b7eb93",
+      "name": "Respond to Webhook2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Prepare Transaction Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Transaction Data": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        []
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "8028f17c-0fde-4df2-9c1a-85bfebe1698c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "17e40681c772b509b30aef83269134b15b6ff5d23484c616ebb04d5628e25576"
+  },
+  "id": "cA18vkengi4KwGhe",
+  "tags": []
+}
