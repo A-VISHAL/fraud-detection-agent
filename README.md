@@ -73,8 +73,8 @@ Trigger a payment from the web app to view real-time fraud detection results.
 
 🔗 Prototype Links
 
-GitHub Repository: Add link here
 
-Demo Video (1–2 minutes): Add link here
 
-Hosted Prototype (Optional): Add link here
+Demo Video:https://drive.google.com/file/d/1iTQNzuaXlO43vdD7VngVsBcJvOKfQ_1V/view?usp=sharing
+
+Hosted Prototype:https://fraud-detection-agent.netlify.app/ 
